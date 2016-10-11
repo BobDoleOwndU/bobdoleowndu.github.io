@@ -1,0 +1,72 @@
+﻿<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title></title>
+
+    <!--CSS Section-->
+    <link href="/Content/bootstrap.min.css" rel="stylesheet" />
+    <link href="/Content/bootstrap-theme.min.css" rel="stylesheet" />
+    <link href="/Content/styles.css" rel="stylesheet" />
+
+    <!--JavaScript Section-->
+    <script src="/Scripts/jquery-2.1.4.min.js"></script>
+    <script src="/Scripts/bootstrap.min.js"></script>
+    <script>
+        $(function () {
+            $("#header").load("/header.html");
+            $("#footer").load("/footer.html");
+        });
+    </script>
+</head>
+<body>
+    <div id="header"></div>
+
+    <!--Content Section-->
+    <div class="container-fluid">
+		<a href="index.html">Back to Documentation...</a>
+        <h2>EquipDevelopFlowSetting.lua Information</h2>
+		<div>
+			<p>Location (original): data0.dat/Assets/tpp/motherbase/script</p>
+		</div>
+		<div>
+			<p>EquipDevelopFlowSetting.lua is a major script used to control the flow of item and weapon development. It controls the GMP, resources, time, and levels required to develop items.</p>
+			<p>The script has been minified, but I have discovered most of the minified variables meanings:</p>
+			<ul>
+				<li>p50 = id</li>
+				<li>p51 = ???</li>
+				<li>p52 = Equipment Grade</li>
+				<li>p53 = Development Cost GMP</li>
+				<li>p54 = Deployment Cost GMP</li>
+				<li>p55 = R&D Level Requirement</li>
+				<li>p56 = Second Team Identifier</li>
+				<li>p57 = Second Team Level Requirement</li>
+				<li>p58 = Resource 1 Type</li>
+				<li>p59 = Resource 1 Development Cost</li>
+				<li>p60 = Resource 2 Type</li>
+				<li>p61 = Resource 2 Development Cost</li>
+				<li>p62 = ???</li>
+				<li>p63 = ???</li>
+				<li>p64 = ???</li>
+				<li>p65 = Resource 1 Type</li>
+				<li>p66 = Resource 1 Deployment Cost</li>
+				<li>p67 = Resource 2 Type</li>
+				<li>p68 = Resource 2 Deployment Cost</li>
+				<li>p69 = ???</li>
+				<li>p70 = ???</li>
+				<li>p71 = Time to Develop</li>
+				<li>p72 = Offline (0) or Online (1)</li>
+				<li>p73 = Buddy Bond Requirement</li>
+				<li>p74 = ???
+			</ul>
+			<p>It is possible to develop online items offline by setting p72 to 0, but upon reconnecting to MGSV's servers, they will return to their online state and will not remain developed if they were developed offline.</p>
+		</div>
+    </div>
+
+    <div id="footer"></div>
+</body>
+</html>

@@ -1,0 +1,114 @@
+﻿<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title></title>
+
+    <!--CSS Section-->
+    <link href="/Content/bootstrap.min.css" rel="stylesheet" />
+    <link href="/Content/bootstrap-theme.min.css" rel="stylesheet" />
+    <link href="/Content/styles.css" rel="stylesheet" />
+
+    <!--JavaScript Section-->
+    <script src="/Scripts/jquery-2.1.4.min.js"></script>
+    <script src="/Scripts/bootstrap.min.js"></script>
+    <script>
+        $(function () {
+            $("#header").load("/header.html");
+            $("#footer").load("/footer.html");
+        });
+    </script>
+</head>
+<body>
+    <div id="header"></div>
+
+    <!--Content Section-->
+    <div class="container-fluid">
+		<a href="index.html">Back to Documentation...</a>
+		<div>
+			<h2>Sound Swapping and the Wwise Format</h2>
+			<p>What you need before sound swapping:</p>
+			<ul>
+				<li><a href="https://github.com/secaproject/MGSV-QAR-Dictionary-Project">The latest QAR dictionary.txt</a></li>
+				<li><a href="https://github.com/Atvaark/GzsTool/releases">GzsTool</a></li>
+				<li><a href="http://www.scampers.org/steve/sms/other.htm#ravioli_download">Ravioli Game Tools</a></li>
+				<li><a href="https://mh-nexus.de/en/downloads.php?product=HxD">HxD</a></li>
+				<li><a href="http://www.audacityteam.org/download/">Audacity (Optional)</a></li>
+				<li><a href="https://www.audiokinetic.com/download/">Wwise (Optional)</a></li>
+				<li>A method to get your modified soundbank back into the game (either the QAR Tool or SnakeBite)</li>
+			</ul>
+			<p>This tutorial is specifically for voice swapping. It can be used for some other audio files as well, but may not work for all audio files.</p>
+			<p>First thing’s first. Update your GzsTool’s qar_dictionary.txt with the updated one you downloaded. Now you’re ready to unpack the chunk.dat files (with GzsTool) and find the soundbanks you want.</p>
+			<p>If you’re looking to swap a character’s voice, Snake’s soundbank is in chunk0, and all of the playable staff members’ are in chunk1. Inside either folder, go to “Assets\tpp\sound\asset” and you’ll find the respective soundbanks. All soundbanks have the .sbp extension.</p>
+			<p>Now, that you’ve found your soundbank, we can start getting sounds out of it! If you are planning on modifying this soundbank, there’s an extra step first. Drag the .sbp file onto GzsTool. GzsTool will unpack it and inside will be a .bnk, .sab and .stp file. The .bnk is a wwise audio container. The other two file formats seem to be related to 3D animation, but the .stp also contains wwise audio files.</p>
+			<p>The file we care about right now is the .bnk. Run Ravioli’s RScanner. Click “New Scan…”. Navigate to the folder that GzsTool unpacked the contents of the .sbp into and select the .bnk file. The contents of the .bnk will show up in RScanner’s window. Scroll to the bottom and look for the last file listed. There may be a file called Unkn####.dat after this file, but we can ignore it. We only care about the last file named File####.wwise_x (note that “x” can be any letter). In example, the last file in Snake’s voice’s .bnk is File0075.wwise_v. We need to remember the number of the file, this is important later. Following my example, I would need to remember 75.</p>
+			<p>Now, we can close RScanner and delete the folder and xml file that GzsTool extracted from the .sbp file. We don’t need the files inside the folder or the xml file anymore. All we needed was the number we found on the last file.</p>
+			<p>Next, we need to get all of the audio files in an audible format. Create a new folder that will hold the audible versions of your files. Change the extension on the .sbp file you’ve been working with to “.bnk”. Now, start RExtractor. Under “Input file(s)” select the .sbp file you just changed the extension on. Under “Output directory” select the new folder you created. Under options, select “Convert sounds to: Wave” and “Allow scanning of unknown files”. After that, click “Start” and allow it to finish. It may say some files failed to convert. Ignore and delete these files. They are likely not voice files anyway.</p>
+			<p>Hooray! You now have the files in an audible format! You can now close RExtractor. Now, we need to get the files in their original format. Create another new folder, which will hold the files in their original format. Change the extension of the .sbp you changed back to “.sbp”. Start RScanner again. Once again, click “New scan…”. Choose your .sbp file. This time, click “Extract All…” and select the newly created folder. Now we have the files both in an audible format and their original format!</p>
+			<p>Now, you’ll need to repeat the whole process up to this point on a second .sbp to get the files you want to swap in. However, you can skip the part where we opened the .sbp with GzsTool and opened the .bnk file with RScanner to see what the last file’s number was. We do not need this number since we aren’t editing this file.</p>
+			<p>Once you’ve got the files you want to swap in, we can get started on the fun part (by fun I mean very long and tedious). The first thing to do is to listen to all of the audio you extracted, so you know exactly what each file contains. It’s a good idea to note what every file is in a text editor and then reference your notes later. Once you’ve got your notes down, we can begin.</p>
+			<p>Remember the number we got earlier? This is where it’s going to come in handy. That number tells you which files came from the .bnk and which files came from the .stp. Using my Snake example, the number was 75. This means that File0001 - File0075 came from the .bnk. All of the others came from the .stp. Why is it important to know this? It’s much easier to swap over files from the .stp! You can just rename the file you want to swap in and replace the old one! This is NOT the case with .bnk files though. They require some manual hex editing to work correctly. When swapping in files, be weary of their file size. The size of the sound you’re swapping in must be smaller than or equal to the file size of the original. If a file is slightly too big to fit in, we can fix it with Audacity and Wwise (I’ll cover this later). If it’s much too big, it will not work. Find another file.</p>
+			<p>So now that you know the limitations of sound swapping, you can begin! Start by replacing all of the wwise files that came from the .stp. Again, you can do this by renaming the file you want to swap in to the original file’s name and then overwriting it.</p>
+			<p>Once you’re done that, we can talk about how to replace files from the .bnk. For each of these files, you’re going to need to edit them in HxD. (Note: size restrictions still apply with hex editing files.)</p>
+			<p>Don’t understand what the hex says? No problem! All of the work has been done for you already:</p>
+			<ul>
+				<li>0x00 - 0x03: (32) "RIFF" name</li>
+				<li>0x04 - 0x07: (32) Riff size</li>
+				<li>0x08 - 0x0A: (32) "WAVE" name</li>
+				<li>0x0B - 0x0F: (32) Chunk type: "fmt "</li>
+				<li>0x10 - 0x13: (32) Chunk size</li>
+				<li>0x14 - 0x15: (16) 0xFFFF (audio format) 0xFFFF means experimental</li>
+				<li>0x16 - 0x17: (16) Num of channels</li>
+				<li>0x18 - 0x1B: (32) Sample rate in Hz (stored backwards) ex: 44 AC 00 00 = 44100Hz</li>
+				<li>0x1C - 0x1F: (32) Avg bytes per second</li>
+				<li>0x20 - 0x21: (16) 0x0000 (block align)</li>
+				<li>0x22 - 0x23: (16) 0x0000 bits per sample (expected 0bps)</li>
+				<li>0x24 - 0x25: (16) Chunk size</li>
+				<li>0x26 - 0x27: (16) Extra fmt? (1 = yes)</li>
+				<li>0x28 - 0x2B: (32) Subtype (4 = 1 channel, no seek table)</li>
+				<li>0x2C - 0x2F: (32) Num of samples (num of bit per sample)</li>
+				<li>0x30 - 0x33: (32) Mod signal</li>
+				<li>0x34 - 0x35: (16) Data size (go to 0x5A - 0x5D)</li>
+				<li>0x36 - 0x39: (32) Setup packet offset</li>
+				<li>0x3A - 0x3D: (32) First audio packet offset</li>
+				<li>0x3E - 0x3F: Unknown</li>
+				<li>0x40 - 0x43: (32) Mod signal</li>
+				<li>0x44 - 0x47: Unknown</li>
+				<li>0x48 - 0x4D: Unknown relation to subtype</li>
+				<li>0x4E - 0x4F: (16) Padding(?)</li>
+				<li>0x50 - 0x53: (32) Uid</li>
+				<li>0x54: _blocksize_0_pow</li>
+				<li>0x55: _blocksize_1_pow</li>
+			</ul>
+			<p>This is the layout for the wwise format’s header. It’s not necessary to understand what most of it means for what we’re doing. But if you’re getting into more advanced sound modding, this information is important.</p>
+			<p>Open up both the file you’re replacing and the file you want to replace it with in HxD. You’ll want to overwrite the following sections on the file you’re replacing by copying the same section from the file you’re replacing it with:</p>
+			<ul>
+				<li>0x16 - 0x17 (very rarely necessary, but if it does differ, this needs to be overwritten)</li>
+				<li>0x18-0x1B</li>
+				<li>0x28-0x2B (again, very rarely necessary, but if it does differ, this needs to be overwritten)</li>
+				<li>0x48-0x4D (also rarely necessary, but if it differs, overwrite it)</li>
+				<li>0x50-0x53</li>
+			</ul>
+			<p>That covers the header. Now to get the actual data in. On the file you’re replacing the original with, look for a string of text that says “data”. In most of MGSV’s wwise files there are two of these strings we want the second one. (The first one is usually followed by a bunch of periods and then LIST. If you see this one, ignore it. If you find a wwise file that only has one data string, like custom built ones, follow the same process, but use the single data string.) After the four bytes following the string is the actual data. You’re going to want to highlight from this point all the way to the bottom of the file and copy it. You’re going to want to highlight this same section in the original file and paste over it.</p>
+			<p>Example: If I see “dataø...É” I want to start highlighting at the É since it is the fifth byte after the data string.</p>
+			<p>Once you’ve done that, you’re done editing the file! HxD will have created a .bak file of the file you edited. Delete the .bak file. We do not need it. Repeat this process for every file that came from the .bnk.</p>
+			<p>Done editing all of your files? Good! We can put the .sbp back together now. Start RScanner. Click “New scan…” and choose the .sbp. This time, click “Combine…”. Now choose the folder that contains the edited/replaced wwise files. It will probably tell you that it needs to add padding to the files to make them the correct size. Just keep clicking ok (or hold enter) until it’s done. Once it’s finished, you can either save the edited soundbank in a new place, or just overwright the old one. With that, you’re done! Just put the edited soundbank in the game and you should hear your changes.</p>
+		</div>
+		<div>
+			<h2>Shrinking Audio Files</h2>
+			<p>Now, let’s talk about getting sounds that are slightly too big over a smaller sound. We can do this with Wwise and Audacity. Start Wwise and create a new project. Make note of where the project is located. We’re going to need to go to this location later to get our file. Under “Platforms”, we only need Windows and under “Import assets to project” select none.</p>
+			<p>Go to Project > Project Settings. Click the Source Settings tab. Click the ellipsis under “Default Conversion Settings”. Open Factory Conversion Settings > Vorbis and choose Vorbis Quality Low. Then click “Ok” to close both windows. Now, go to Project > Import Audio Files. Click “Add Files” and choose the .wav version of the file that you want to swap into the game. Now click “Import”.</p>
+			<p>Once you’ve imported your sound(s) go to Project > Convert All Audio Files…. In the window that pops up, only select Windows. Click “Ok”.</p>
+			<p>Navigate to your Wwise project’s location. Inside its folder will be a “.cache” folder. Navigate to “.cache\Windows\SFX”. Inside here, will be the wwise version of the .wav you imported. (The extension will be .wem.) This file should have a smaller size than the original file, and may be able to fit over the smaller wwise file you were trying to replace! If it still doesn’t, you’re not out of luck yet, this is where Audacity comes in.</p>
+			<p>Start Audacity. Go to File > Import > Audio and select the .wav version of the sound you want to swap in. Choose “Make a copy of the files before editing” if a window pops up. In the bottom left corner, there will be a value that says “Project Rate (Hz)” which influences the bitrate of the sound you’re working with. Decrease this value. You can drop it down to 32000, and any difference will not be noticeable to the human ear. Once you’ve done that, go to File > Export Audio…. Under “Save as type” choose “WAV (Microsoft) signed 16-bit PCM”. Save it as a new file; don’t overwrite the original.</p>
+			<p>Now, go back to Wwise. On a panel on the left you should see a folder icon with “Actor-Mixer Hierarchy” beside it and under that, you should see “Default Work Unit”. Click the + beside “Default Work Unit”. In there you will see the original file you imported. Delete it. Now go to Project > Clear Audio File Cache…. In the window that pops up, select “All converted files” and click “Ok”. Now, go to Project > Import Audio Files… and choose the .wav you created with Audacity. After that, just click "Import". If it says there's a conflict, click "Import again". It will overwrite the old file. Then, go to Project > Convert All Audio Files… and again only select Windows. Go back to your project’s location and then to “.cache\Windows\SFX”. Your wwise (.wem) file will be there and it should be an even smaller file size. If it is small enough, you can now swap it in!</p>
+		</div>
+    </div>
+
+    <div id="footer"></div>
+</body>
+</html>
