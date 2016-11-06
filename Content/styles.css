@@ -8,6 +8,11 @@ body {
     padding-top: 70px;
 }
 
+.document {
+	margin: 0 auto;
+	width: 33%;
+}
+
 .footer {
     height: 60px;
     text-align: center;
