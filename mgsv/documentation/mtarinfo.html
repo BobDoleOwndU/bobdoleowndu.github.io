@@ -1,0 +1,91 @@
+﻿<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title></title>
+
+    <!--CSS Section-->
+    <link href="/Content/bootstrap.min.css" rel="stylesheet" />
+    <link href="/Content/bootstrap-theme.min.css" rel="stylesheet" />
+    <link href="/Content/styles.css" rel="stylesheet" />
+
+    <!--JavaScript Section-->
+    <script src="/Scripts/jquery-2.1.4.min.js"></script>
+    <script src="/Scripts/bootstrap.min.js"></script>
+    <script>
+        $(function () {
+            $("#header").load("/header.html");
+            $("#footer").load("/footer.html");
+        });
+    </script>
+</head>
+<body>
+    <div id="header"></div>
+
+    <!--Content Section-->
+    <div class="container-fluid document">
+		<a href="index.html">Back to Documentation...</a>
+        <h2>Mtar Format Information</h2>
+		<div>
+			<p>Mtar (Motion Archive) is an archive file which contains MGSV's animation files (.gani). There appears to be two slightly differing formats for .mtar files. The first format is very easy to read and extract files from. For example, TppPlayer2Facial.mtar is an Mtar Type 1. The second format is much more confusing with scattered animation chunks and .ganis that do not have headers. For example, player2_resident is an Mtar Type 2. The only way to see which type of Mtar a file is, is to open it in a hex editor. If the file list in the beginning has two lines for each file, it is a Type 2. If it only has one per file, it is a Type 1. Both formats are Little-Endian.</p>
+
+			<h3>Mtar Type 1 Format (i.e. TppPlayer2Facial.mtar)</h3>
+			<strong>Mtar Type 1 Header</strong>
+			<ul>
+				<li>0x0 - 0x3 (32): Signature? 9C A8 FF 0B = Gzs, 72 2B 01 0C = Tpp</li>
+				<li>0x4 - 0x7 (32): Number of files. Each line starting at 0x20 seems to indicate a file.</li>
+				<li>0x8 - 0xB (32): Bone Group 1.</li>
+				<li>0xC - 0xF (32): Bone Group 2.</li>
+				<li>0x10 - 0x1F: Padding.</li>
+			</ul>
+
+			<strong>File declaring/listing begins at 0x20. All files in the list follow this format</strong>
+			<ul>
+				<li>0x20 - 0x27 (64): Hashed name of file. I.e. 63 0C 20 DA FA AF 53 FC = 3affada200c63.gani</li>
+				<li>0x28 - 0x2B (32): File location offset.</li>
+				<li>0x2C - 0x2F (32): File length.</li>
+			</ul>
+			
+			<strong>Gani Type 1 File Format</strong>
+			<ul>
+				<li>0x0 - 0x3 (32): Signature (D2 A2 FC 0B).</li>
+				<li>0x4 - 0x7 (32): Unknown.</li>
+				<li>0x8 - 0xB (32): File length.</li>
+				<li>0xC - 0xF (32): Padding.</li>
+			</ul>
+
+			<h3>Mtar Type 2 Format (i.e. player2_resident.mtar)</h3>
+			<strong>Mtar Type 2 Header</strong>
+			<ul>
+				<li>0x0 - 0x3 (32): Signature? 72 2B 01 0C = Tpp</li>
+				<li>0x4 - 0x7 (32): Number of files. Each 2 lines starting at 0x20 to indicates a file.</li>
+				<li>0x8 - 0xB (32): Bone Group 1.</li>
+				<li>0xC - 0xF (32): Padding.</li>
+				<li>0x10 - 0x13 (32): Bone Group 2.</li>
+				<li>0x14 - 0x17 (32): Offset for main animation tracks' description. Signature (EF AA BD 4F).</li>
+				<li>0x18 - 0x1F (80): Padding.</li>
+			</ul>
+
+			<p>A chunk with an unknown purpose will follow the main animation tracks' description. Known signatures can be 4B 53 E4 91 or 84 77 9A 3B. More possibilities for this signature may exist.</p>
+
+			<strong>File declaring/listing begins at 0x20. All files in the list follow this format</strong>
+			<ul>
+				<li>0x20 - 0x27 (64): Hashed name of file. I.e. 63 0C 20 DA FA AF 53 FC = 3affada200c63.gani</li>
+				<li>0x28 - 0x2B (32): File location offset.</li>
+				<li>0x2C - 0x2D (16): File length divided by 10 (multiply by 10 to get the length).</li>
+				<li>0x2E - 0x2F (16): File length may appear here as well. If it does, the .gani file has an extra chunk (.exchnk) of animation.</li>
+				<li>0x30 - 0x31 (16): If the file has an .exchunk, its length will appear here. .exchunk data immediately follow the .gani file data.</li>
+				<li>0x32 - 0x37 (48): Padding.</li>
+				<li>0x38 - 0x3B (32): Offset for another chunk of animation data, tied to the .gani, at the end of the .mtar (.enchnk).</li>
+				<li>0x3C - 0x3F (32): Padding.</li>
+			<ul>
+		</div>
+    </div>
+
+    <div id="footer"></div>
+</body>
+</html>
