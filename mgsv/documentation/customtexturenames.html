@@ -1,0 +1,72 @@
+﻿<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title></title>
+
+    <!--CSS Section-->
+    <link href="/Content/bootstrap.min.css" rel="stylesheet" />
+    <link href="/Content/bootstrap-theme.min.css" rel="stylesheet" />
+    <link href="/Content/styles.css" rel="stylesheet" />
+
+    <!--JavaScript Section-->
+    <script src="/Scripts/jquery-2.1.4.min.js"></script>
+    <script src="/Scripts/bootstrap.min.js"></script>
+    <script>
+        $(function () {
+            $("#header").load("/header.html");
+            $("#footer").load("/footer.html");
+        });
+    </script>
+</head>
+<body>
+    <div id="header"></div>
+
+    <!--Content Section-->
+    <div class="container-fluid document">
+		<a href="index.html">Back to Documentation...</a>
+        <h2>Getting FMDLs to Load Custom Texture Names</h2>
+		<div>
+			<p>To get an .fmdl to load a custom texture, this is what you need to do. I'll be using plparts_battledress as an example.</p>
+ 
+			<p>Let's say you want to edit the diffuse map. First, you need to get the hashed name of the diffuse map. If you only have the real name for a texture, you can use <a href="https://github.com/BobDoleOwndU/QuickHash/releases">QuickHash</a>, a small tool I wrote to generate the hashed name.</p>
+ 
+			<p>The real name for the Battle Dress' diffuse map is sna5_main0_def_bsm.ftex. You need to include its path, without the extension in QuickHash to get its hashed name.</p>
+ 
+			<p>You would enter the following for the correct hash to be generated:</p>
+			<p><strong>/Assets/tpp/chara/sna/Pictures/sna5_main0_def_bsm</strong></p>
+			
+			<p>The result should be:</p>
+			<p><strong>19bba3a3168b8</strong></p>
+			
+			<p>Ok, now you have the hashed name! Now, let's say I want to replace it with a custom texture called sna5_custom_def_bsm.ftex. I'll need to use QuickHash to generate the hash for this custom texture.</p>
+ 
+			<p>I would enter:</p>
+			<p><strong>/Assets/tpp/chara/sna/Pictures/sna5_custom_def_bsm</strong></p>
+			
+			<p>The result is:</p>
+			<p><strong>1735ea6590c5c</strong></p>
+			
+			<p>Ok, you now have the original hash, and the hash you are going to replace it with. Now you need to open up the .fmdl in a hex editor such as HxD.</p>
+ 
+			<p>The .fmdl format is little-endian, which essentially means that the bytes are written backwards. So we need to reverse the bytes of our hashed names, starting from the end first.</p>
+			<ul>
+				<li>Start with the hash: <strong>19bba3a3168b8</strong></li>
+				<li>Separate the bytes, starting with the end first: <strong>1 9b ba 3a 31 68 b8</strong></li>
+				<li>Reverse the order: <strong>b8 68 31 3a ba 9b 1</strong></li>
+				<li>Replace the singular digit, No singular digit = 68, 1 = 69, 2 = 6A, 3 = 6B: <strong>b8 68 31 3a ba 9b 69</strong></li>
+			</ul>
+ 
+			<p>Repeat these steps for your custom texture's hash as well. Now search for the reversed version of the original hash in your hex editor (using hex as the search type). Now, replace the bytes you found with the reversed version of your custom texture's hash. Following the example I gave earlier, I would be replacing b8 68 31 3a ba 9b 69 with 5c 0c 59 a6 5e 73 69.</p>
+ 
+			<p>And that's it! The .fmdl will now search for your custom texture's name instead of the original. Just add the custom named texture to the .pftxs file and it should work!</p>
+		</div>
+    </div>
+
+    <div id="footer"></div>
+</body>
+</html>
