@@ -1,0 +1,62 @@
+﻿<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title></title>
+
+    <!--CSS Section-->
+    <link href="/Content/bootstrap.min.css" rel="stylesheet" />
+    <link href="/Content/bootstrap-theme.min.css" rel="stylesheet" />
+    <link href="/Content/styles.css" rel="stylesheet" />
+
+    <!--JavaScript Section-->
+    <script src="/Scripts/jquery-2.1.4.min.js"></script>
+    <script src="/Scripts/bootstrap.min.js"></script>
+    <script>
+        $(function () {
+            $("#header").load("/header.html");
+            $("#footer").load("/footer.html");
+        });
+    </script>
+</head>
+<body>
+    <div id="header"></div>
+
+    <!--Content Section-->
+    <div class="container-fluid document">
+		<a href="index.html">Back to Documentation...</a>
+        <h2>Fsm Format Information</h2>
+		<strong>First SND Header</strong>
+		<ul>
+			<li>0x0 - 0x3 (32): Signature</li>
+			<li>0x4 - 0x7 (32): File size</li>
+			<li>0x5 - 0xF (64): Double, Time to begin playing (Always 0x0 for first SND)</li>
+			<li>0x10 - 0x13 (32): Complete Wem file length</li>
+			<li>0x14 - 0x1F: Unknown</li>
+		</ul>
+		<strong>Other Sub File Header</strong>
+		<ul>
+			<li>0x0 - 0x3 (32): Signature</li>
+			<li>0x4 - 0x7 (32): File size</li>
+			<li>0x5 - 0xF (64): Double, Time to beging playing</li>
+		</ul>
+		<strong>Calculating the Double</strong>
+		<p>DEMO chunk order, ignoring SND chunks, (i.e. 3) * 1.001000004645 with the last digit rounded (i.e. 3.003000013935 becomes 3.00300001394)</p>
+		<p>No preset size for SND chunks. Must be calculated from the play size of the chunk after being cut. There is no known way to do this currently. If a way to do this is found, it would allow cutscene audio to be replaced.</p>
+		<strong>Examples</strong>
+		<ol>
+			<li>3F F0 04 18 94 B3 FF 2F = 1.00100000465</li>
+			<li>40 00 04 18 94 B3 FF 2F = 2.00200000929</li>
+			<li>40 08 06 24 DF 0D FE C6 = 3.00300001394</li>
+			<li>40 10 04 18 94 B3 FF 2F = 4.00400001858</li>
+			<li>40 14 05 1E B9 E0 FE FB = 5.00500002323</li>
+		</ol>
+    </div>
+
+    <div id="footer"></div>
+</body>
+</html>
