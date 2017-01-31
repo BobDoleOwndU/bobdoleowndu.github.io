@@ -4,8 +4,23 @@
 }
 
 body {
+	background-color: #484848;
+	color: #C8C8C8;
     margin-bottom: 60px;
     padding-top: 70px;
+}
+
+a {
+	color: #B9C3CC;
+}
+
+a:hover {
+	color: #B9C3CC;
+	text-decoration: underline;
+}
+
+h1, h2, h3, .jumbotron h1 {
+	color: #62A9E7
 }
 
 .document {
@@ -18,18 +33,28 @@ body {
     text-align: center;
 }
 
+.footer a {
+	color: #337ab7;
+}
+
 .info {
-    background-color: antiquewhite;
+    background-color: #333;
     border-radius: 5px;
     max-width: 50%;
     margin: 0 auto;
     padding: 10px;
+	text-align: center;
 }
 
-.info-container {
-    text-align: center;
+.jumbotron {
+	background-color: #333;
+	text-align: center;
 }
 
 #space-infiltrators {
     text-align: center;
+}
+
+.underline {
+	text-decoration: underline;
 }

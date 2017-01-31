@@ -28,7 +28,7 @@
 
     <!--Content Section-->
     <div class="container-fluid document">
-		<a href="index.html">Back to Documentation...</a>
+		<a class="underline" href="index.html">Back to Documentation...</a>
         <h2>Mtar Format Information</h2>
 		<div>
 			<p>Mtar (Motion Archive) is an archive file which contains MGSV's animation files (.gani). There appears to be two slightly differing formats for .mtar files. The first format is very easy to read and extract files from. For example, TppPlayer2Facial.mtar is an Mtar Type 1. The second format is much more confusing with scattered animation chunks and .ganis that do not have headers. For example, player2_resident is an Mtar Type 2. The only way to see which type of Mtar a file is, is to open it in a hex editor. If the file list in the beginning has two lines for each file, it is a Type 2. If it only has one per file, it is a Type 1. Both formats are Little-Endian.</p>
