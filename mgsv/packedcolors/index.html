@@ -34,7 +34,7 @@
 			}
 			
 			var colArr = Uint8Array.fromHex(color);
-			var result = (colArr[0]/256) + (colArr[1]/(256**2)) + (colArr[2]/(256**3)) + ((colArr[3] ?? 255)/(256**4));
+			var result = Math.fround((colArr[0]/256) + (colArr[1]/(256**2)) + (colArr[2]/(256**3)) + ((colArr[3] ?? 0)/(256**4)));
 			
 			document.getElementById("hex-color-output").value = result;
 		}
@@ -63,8 +63,10 @@
 
     <!--Content Section-->
     <div class="container-fluid">
+		<h2>Packed Colors</h2>
+		<p>MGSV's shaders contain functions for packing and float4 vectors to and from a single float value. I realized this function could be used to store color values, which normally take up 4 of the limited 32 shader parameter floats, in a single float! While this calculator does technically support both RGBA and RGB values, RGBA values will end up with floating point rounding errors at high alpha values due to the limitations of the function. (I.e. #FFFFFFFF will evaluate to 1, which when unpacked results in a value of #00000000 due to loss of precision.) So I recommend only using this for storing RGB values, which is likely all you'll need it for anyway.</p>
 		<div>
-			<h2>Color Packer</h2>
+			<h3>Color Packer</h3>
 			<label for="hex-color">Hex Color:</label>
 			<input type="text" id="hex-color" style="color:black;">
 			<button class="btn btn-primary" onclick="packColor()">Pack Color</button>
@@ -72,7 +74,7 @@
 			<input type="text" id="hex-color-output" style="color:black;">
 		</div>
 		<div>
-			<h2>Color Unpacker</h2>
+			<h3>Color Unpacker</h3>
 			<label for="packed-color">Packed Color:</label>
 			<input type="text" id="packed-color" style="color:black;">
 			<button class="btn btn-primary" onclick="unpackColor()">Unpack Color</button>
